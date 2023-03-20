@@ -1,0 +1,3 @@
+
+RewriteEngine On
+RewriteRule ^(.*)/(.*)\.(jpg|jpeg)$ index.php?yt_code=$1&thumbs_type=$2 [QSA,L]

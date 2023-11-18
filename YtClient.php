@@ -50,14 +50,11 @@ class YtClient {
     $path = self::SERVICE_PLAY_PREFIX . $yt_code;
     $video_data = $this->client($path);
     if ($video_data['status']) {
-      preg_match('@\\\\\"videoDetails\\\\\":({(\\\\\"\w+\\\\\":(\\\\\"(|.*?[^\\\\])\\\\\"|[\w|\d|\.]+|\[.*?\]|{.*?\]})[,|}|])+)@',
+      preg_match('@"videoDetails":({("\w+":("(|.*?[^\\\\])"|[\w|\d|\.]+|\[.*?\]|{.*?\]})[,|}|])+)@',
                  $video_data['data'],
                  $output_array);
       if (isset($output_array[1])) {
-        $video_info_raw = str_replace('\/', '/', $output_array[1]);
-        $video_info_raw = str_replace('\\\\', '\\', $video_info_raw);
-        $video_info_raw = str_replace('\"', '"', $video_info_raw);
-        $video_info_obj = json_decode($video_info_raw, true);
+        $video_info_obj = json_decode($output_array[1], true);
         if ($video_info_obj !== NULL) {
           $res['data'] = $video_info_obj;
           $res['status'] = true;
